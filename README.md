@@ -1,4 +1,4 @@
-A modified version of the original Android InsecureBankv2 repo, that't solved the problem of running the `flask` python server with **python 2.7** to make it work properly with ordinary **python3.x+**
+A modified version of the original Android InsecureBankv2 repo, that't solved the problem of running the `flask` python server with **python 2.7** to make it work properly with ordinary **python3.x+** to help mobile penetration testers to practice all kinds of android application vulnerabilites
 
 #### Installation
 
@@ -22,6 +22,9 @@ python app.py
 
 #### Screenshots
 
-![screenshots\Screenshot 2025-05-19 203806.png]
-![screenshots\Screenshot 2025-05-19 203706.png]
-![screenshots\Screenshot 2025-05-19 203806.png]
+![](https://github.com/SaherMuhamed/Modified-Android-InsecureBankv2/blob/main/screenshots/Screenshot%202025-05-19%20203515.png)
+![](https://github.com/SaherMuhamed/Modified-Android-InsecureBankv2/blob/main/screenshots/Screenshot%202025-05-19%20203706.png)
+![](https://github.com/SaherMuhamed/Modified-Android-InsecureBankv2/blob/main/screenshots/Screenshot%202025-05-19%20203806.png)
+
+#### Acknowledge
+All credits goes to the original repo of Android InsecureBank https://github.com/dineshshetty/Android-InsecureBankv2

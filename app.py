@@ -2,7 +2,7 @@ import getopt
 import sys
 from html import escape as html_escape
 from functools import wraps
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from werkzeug.serving import run_simple
 from models import User, Account
 from database import db_session
@@ -72,20 +72,20 @@ def getaccounts():
 
 @app.route('/changepassword', methods=['POST'])
 def changepassword():
-    Responsemsg = "fail"
-    newpassword = request.form['newpassword']
-    user = request.form['username']
-    print(newpassword)
-    u = User.query.filter(User.username == user).first()
+    newpassword = request.form.get('newpassword')
+    user = request.form.get('username')
+    
+    if not newpassword or not user:
+        return jsonify({"message": "Missing username or password"}), 400
+
+    u = User.query.filter_by(username=user).first()
     if not u:
-        Responsemsg = "Error"
-    else:
-        Responsemsg = "Change Password Successful"
-        u.password = newpassword
-        db_session.commit()
-    data = {"message": Responsemsg}
-    print(makejson(data))
-    return makejson(data)
+        return jsonify({"message": "User not found"}), 404
+
+    u.password = newpassword  # plain text (⚠️ not secure)
+    db_session.commit()
+    
+    return jsonify({"message": "Change Password Successful"})
 
 
 @app.route('/dotransfer', methods=['POST'])

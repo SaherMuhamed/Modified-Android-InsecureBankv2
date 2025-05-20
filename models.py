@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(Base):
@@ -9,32 +8,23 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)
-    password_hash = Column(String(128), nullable=False)  # Store hashed passwords
+    password = Column(String(128), nullable=False)  # Plaintext password
     first_name = Column(String(50))
     last_name = Column(String(50))
     accounts = relationship('Account', backref='owner', lazy=True)
 
     def __init__(self, username=None, password=None, first_name=None, last_name=None):
         self.username = username
-        self.password = password  # This uses the setter method below
+        self.password = password  # Store password directly
         self.first_name = first_name
         self.last_name = last_name
 
     def __repr__(self):
         return f'<User {self.username}>'
 
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
-
-    @password.setter
-    def password(self, password):
-        """Store password as hash instead of plaintext"""
-        self.password_hash = generate_password_hash(password)
-
     def verify_password(self, password):
-        """Check password against stored hash"""
-        return check_password_hash(self.password_hash, password)
+        """Direct string comparison for plaintext password"""
+        return self.password == password
 
     @property
     def values(self):
@@ -50,7 +40,7 @@ class Account(Base):
     __tablename__ = 'accounts'
 
     id = Column(Integer, primary_key=True)
-    account_number = Column(String(20), unique=True, nullable=False)  # Changed to String to handle leading zeros
+    account_number = Column(String(20), unique=True, nullable=False)
     type = Column(String(50), nullable=False)
     balance = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
